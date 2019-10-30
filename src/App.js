@@ -1,13 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import TodoList from './TodoList';
 
 export default function App() {
   const [todos, setTodos] = useState([
-    { id: 1, title: 'First todo', completed: false },
-    { id: 2, title: 'Second todo', completed: true }
+    // { id: 1, title: 'First todo', completed: false },
+    // { id: 2, title: 'Second todo', completed: true }
   ]);
 
   const [inputValue, setInputValue] = useState('');
+
+  useEffect(() => {
+    const raw = localStorage.getItem('todos');
+    setTodos(JSON.parse(raw));
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('todos', JSON.stringify(todos));
+  }, [todos]); // works when todos-state changes
 
   const onPressEnter = e => {
     if (e.key === 'Enter') {
